@@ -64,12 +64,12 @@ function handleQuranClick() {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  z-index: 10;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 16px;
-  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  padding: 16px 20px;
+  padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 20px));
   gap: 12px;
   pointer-events: none;
 }

@@ -21,7 +21,7 @@
     <div class="top-bar-right" @click="handleLocationClick">
       <div class="location-text">{{ locationText }}</div>
       <div class="hijri-text">{{ hijriText }}</div>
-      <div v-if="localTime || makkahTime" class="time-text">
+      <div v-if="localTime || makkahTime" class="time-text notranslate" translate="no">
         <span v-if="localTime">{{ $t('time.local') }}: {{ localTime }}</span>
         <span v-if="localTime && makkahTime" class="time-separator"> • </span>
         <span v-if="makkahTime">{{ $t('time.makkah') }}: {{ makkahTime }}</span>
@@ -63,7 +63,7 @@ function handleLocationClick() {
   justify-content: space-between;
   align-items: flex-start;
   padding: 16px;
-  padding-top: max(16px, env(safe-area-inset-top));
+  padding-top: max(20px, calc(env(safe-area-inset-top) + 8px));
   pointer-events: none;
 }
 

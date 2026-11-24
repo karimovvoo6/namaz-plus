@@ -65,7 +65,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePrayerSettingsStore } from '../../../stores/prayerSettingsStore';
-import type { PrayerName } from '../../../stores/prayerStore';
+import { usePrayerStore, type PrayerName } from '../../../stores/prayerStore';
 import SettingsCard from '../../profile/components/SettingsCard.vue';
 
 const props = defineProps<{
@@ -79,6 +79,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 const prayerSettingsStore = usePrayerSettingsStore();
+const prayerStore = usePrayerStore();
 
 const now = ref(new Date());
 let intervalId: number | null = null;
@@ -99,44 +100,43 @@ const startTime = computed(() => {
   return props.prayerTime;
 });
 
+// Время окончания намаза — это наступление следующего намаза (например, Зухр длится до Асра)
 const endTime = computed(() => {
   if (!props.prayerTime) return '--:--';
-  // Вычисляем время окончания намаза (примерно через 5-10 минут)
-  const [hStr, mStr] = props.prayerTime.split(':');
-  const h = Number(hStr);
-  const m = Number(mStr);
-  
-  const end = new Date();
-  end.setHours(h, m + 5, 0, 0);
-  return `${String(end.getHours()).padStart(2, '0')}:${String(end.getMinutes()).padStart(2, '0')}`;
+  const list = prayerStore.prayers;
+  const currentIndex = list.findIndex(p => p.name === props.prayer);
+  if (currentIndex !== -1 && currentIndex < list.length - 1) {
+    return list[currentIndex + 1].at;
+  }
+  // Для последнего намаза (Иша) — окончание наступает с утренним намазом (Фаджр)
+  const firstPrayer = list[0];
+  return firstPrayer ? firstPrayer.at : '--:--';
 });
 
 const timeLeft = computed(() => {
-  if (!props.prayerTime) return '';
-  const [hStr, mStr] = props.prayerTime.split(':');
+  if (!endTime.value || endTime.value === '--:--') return '';
+  const [hStr, mStr] = endTime.value.split(':');
   const h = Number(hStr);
   const m = Number(mStr);
 
-  const prayerDate = new Date();
-  prayerDate.setHours(h, m + 5, 0, 0); // +5 минут для окончания
-  
-  const diff = Math.max(0, Math.floor((prayerDate.getTime() - now.value.getTime()) / 1000));
-  
+  const targetDate = new Date(now.value);
+  targetDate.setHours(h, m, 0, 0);
+  if (targetDate.getTime() <= now.value.getTime()) {
+    targetDate.setDate(targetDate.getDate() + 1);
+  }
+
+  const diff = Math.max(0, Math.floor((targetDate.getTime() - now.value.getTime()) / 1000));
   if (diff === 0) {
     return t('prayerDetails.ended');
   }
-  
+
   const hours = Math.floor(diff / 3600);
   const minutes = Math.floor((diff % 3600) / 60);
-  const seconds = diff % 60;
-  
+
   if (hours > 0) {
-    return `${hours}ч ${minutes}м`;
+    return `${hours} ч ${minutes} мин`;
   }
-  if (minutes > 0) {
-    return `${minutes}м ${seconds}с`;
-  }
-  return `${seconds}с`;
+  return `${minutes} мин`;
 });
 
 function close() {

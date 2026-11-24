@@ -258,12 +258,18 @@ function handleQuranClick() {
 
 .overlay {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 16px;
+  top: max(72px, calc(env(safe-area-inset-top) + 64px));
+  bottom: max(88px, calc(env(safe-area-inset-bottom) + 80px));
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
   z-index: 1;
   pointer-events: none;
+  overflow-y: auto;
 }
 .overlay > * { pointer-events: auto; }
 
