@@ -1,0 +1,20 @@
+"""Настройка логирования."""
+import sys
+import logging
+
+# Настройка кодировки для вывода в консоль
+if sys.platform.startswith('win'):
+    sys.stdout.reconfigure(encoding='utf-8')
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("bot.log", encoding='utf-8')
+    ]
+)
+
+logger = logging.getLogger(__name__)
+
+

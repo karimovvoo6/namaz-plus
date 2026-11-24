@@ -1,0 +1,242 @@
+{
+  "common": {
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "offline": "No connection",
+    "offline_message": "Please check your network connection",
+    "quran": "Quran"
+  },
+  "error": {
+    "service_unavailable": "Service temporarily unavailable",
+    "try_later": "Please try again later",
+    "geo_not_supported": "Geolocation not supported"
+  },
+  "prayers": {
+    "fajr": "Fajr",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha",
+    "tahajjud": "Tahajjud",
+    "next": "Next prayer",
+    "tomorrow": "tomorrow"
+  },
+  "location": {
+    "title": "Location",
+    "current": "Current location",
+    "auto": "Auto",
+    "myLocation": "My location",
+    "searchPlaceholder": "Find city or district",
+    "saved": "Saved cities",
+    "noSaved": "No saved cities",
+    "detecting": "Detecting location...",
+    "error": "Failed to detect location"
+  },
+  "profile": {
+    "title": "Settings",
+    "userProfile": "Profile",
+    "login": "Sign in",
+    "loginSubtitle": "Sign in to see your profile with personal settings",
+    "logout": "Sign out",
+    "language": "Language",
+    "prayerTime": "Prayer time",
+    "notifications": "Notifications & Sounds",
+    "appearance": "Appearance",
+    "appearanceSubtitle": "App icons, Wallpapers",
+    "widgets": "Widgets",
+    "about": "About",
+    "faq": "FAQ"
+  },
+  "notifications": {
+    "title": "Notifications & Sounds",
+    "enabled": "Notifications enabled",
+    "azan": "Adhan",
+    "sound": "Sound",
+    "timeOffset": "Time adjustment",
+    "minutes": "minutes",
+    "rakaatCount": "Rakaat count",
+    "troubleshooting": "Notifications not working?",
+    "troubleshootingHint": "Check notification settings in Telegram",
+    "azan_makkah": "Adhan (Makkah)",
+    "bismillah": "Bismillah",
+    "none": "No sound"
+  },
+  "appearance": {
+    "title": "Appearance",
+    "selectTheme": "Select theme",
+    "wallpapers": "Wallpapers",
+    "autoMode": "Automatic",
+    "auto": "Auto (by time)",
+    "gradients": "Gradients",
+    "sections": {
+      "ai": "AI",
+      "makkah": "Makkah",
+      "classic": "Classic"
+    }
+  },
+  "widgets": {
+    "title": "Widgets",
+    "nextPrayer": "Next prayer",
+    "nextPrayerDesc": "Show next prayer on the main screen",
+    "timer": "Timer to prayer",
+    "timerDesc": "Countdown to the next prayer"
+  },
+  "language": {
+    "title": "Select language",
+    "russian": "Русский",
+    "tajik": "Тоҷикӣ",
+    "english": "English"
+  },
+  "prayerSettings": {
+    "title": "Prayer time",
+    "calculationMethod": "Calculation method",
+    "madhab": "Madhab",
+    "hanafi": "Hanafi",
+    "shafi": "Shafi'i",
+    "sourceTitle": "Prayer time source",
+    "additionalPrayersTitle": "Additional prayers",
+    "tahajjudTitle": "Tahajjud",
+    "tahajjudSubtitle": "Last 1/3 of the night",
+    "moreAboutTahajjud": "More about Tahajjud",
+    "sourcePickerSubtitle": "In the mini-app, the “shuroiulamo” source is taken via your Telegram bot API.",
+    "shuroiDesc": "Like in iOS (via bot API)",
+    "aladhanDesc": "Backup option",
+    "tahajjudInfoText": "This is a voluntary night prayer. The time for it is the last third of the night, calculated between Isha and Fajr.",
+    "gotIt": "Got it"
+  },
+  "qibla": {
+    "title": "Qibla Compass",
+    "direction": "Direction",
+    "degrees": "degrees",
+    "calibrate": "Calibrate compass",
+    "calibrationHint": "Rotate the device in a figure-eight pattern",
+    "errorPermission": "Compass access permission not granted",
+    "errorRequest": "Error requesting compass access",
+    "notSupported": "Compass is not supported on this device"
+  },
+  "time": {
+    "local": "Local time",
+    "makkah": "Makkah time"
+  },
+  "prayerDetails": {
+    "startTime": "Start time",
+    "endTime": "End time",
+    "timeLeft": "Time left",
+    "ended": "Ended",
+    "sound": "Sound",
+    "soundHint": "Enable sound for this prayer",
+    "notifications": "Notifications",
+    "notificationsHint": "Enable notifications for this prayer"
+  },
+  "menu": {
+    "title": "Menu",
+    "allahNames": "99 Names of Allah",
+    "allahNamesDesc": "Asma al-Husna",
+    "dhikr": "Dhikr",
+    "dhikrDesc": "Remembrance of Allah",
+    "calendar": "Calendar",
+    "calendarDesc": "Islamic Calendar"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "events": "Upcoming Events",
+    "hijriFallback": "Hijri Calendar"
+  },
+  "quran": {
+    "title": "Holy Quran",
+    "transcription": "Transcription",
+    "translation": "Translation",
+    "autoplay": "Auto",
+    "repeat": "Repeat",
+    "surah": "Surah",
+    "ayah": "Ayah",
+    "search": "Search surah...",
+    "meccan": "Meccan",
+    "medinan": "Medinan"
+  },
+  "dhikr": {
+    "title": "Dhikr",
+    "subhanallah": "Subhanallah",
+    "subhanallah_desc": "Glory be to Allah",
+    "alhamdulillah": "Alhamdulillah",
+    "alhamdulillah_desc": "Praise be to Allah",
+    "allahu_akbar": "Allahu Akbar",
+    "allahu_akbar_desc": "Allah is the Greatest",
+    "custom": "Custom Dhikr",
+    "custom_desc": "Create your own set",
+    "target": "Target",
+    "reset": "Reset",
+    "completed": "Completed"
+  },
+  "allahNames": {
+    "title": "99 Names of Allah",
+    "search": "Search name...",
+    "meaning": "Meaning",
+    "description": "Description",
+    "inFavorites": "In Favorites",
+    "addToFavorites": "Add to Favorites"
+  },
+  "about": {
+    "title": "About App",
+    "description": "Islamic app for prayer times, Quran and spiritual growth.",
+    "version": "Version",
+    "developer": "Developer",
+    "missionTitle": "Our Mission",
+    "missionText": "Our goal is to make Islamic tools convenient, accurate and modern for Muslims worldwide.",
+    "featuresTitle": "Features",
+    "contactsTitle": "Contacts",
+    "supportEmail": "Support Email",
+    "telegramChannel": "Telegram Channel",
+    "allRightsReserved": "All rights reserved.",
+    "featureList": {
+      "times": "Accurate prayer times",
+      "qibla": "Qibla",
+      "dhikr": "Dhikr",
+      "multilingual": "Multilingual",
+      "notifications": "Notifications"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "search": "Search answer...",
+    "qaTitle": "Questions & Answers",
+    "emptyState": "Nothing found",
+    "supportTitle": "Didn't find an answer?",
+    "contactSupport": "Contact Support",
+    "items": {
+      "times": {
+        "q": "Why may the prayer time differ?",
+        "a": "Time may vary based on the calculation method (e.g., ISNA, MWL) and geographical coordinates. Check the calculation settings in the app."
+      },
+      "method": {
+        "q": "Can I change the calculation method?",
+        "a": "Yes, in the app settings you can choose from several calculation methods accepted in the Islamic world."
+      },
+      "offline": {
+        "q": "Does the app work without internet?",
+        "a": "Base functions like the prayer schedule and Quran (after first download) work offline. Some features may require a connection."
+      },
+      "notifications": {
+        "q": "Why am I not receiving notifications?",
+        "a": "Ensure notifications are enabled in your phone and app settings. Also, check Disturbed mode."
+      },
+      "location": {
+        "q": "How to change location manually?",
+        "a": "Go to the Location section, disable auto-detection, and select a city from the list or specify coordinates."
+      },
+      "theme": {
+        "q": "How to switch dark theme?",
+        "a": "The app automatically adapts to your device theme or you can change it in the Appearance settings."
+      },
+      "language": {
+        "q": "Can I change the language?",
+        "a": "Yes, the app supports several languages. You can change the interface language in the Language Settings section."
+      }
+    }
+  }
+}

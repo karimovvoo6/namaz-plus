@@ -1,0 +1,36 @@
+services:
+  bot:
+    build: ./bot
+    container_name: namaz_bot
+    restart: always
+    env_file:
+      - ./bot/.env
+    volumes:
+      - ./bot:/app
+    ports:
+      - "8080:8080"
+    command: sh -c "uvicorn api_server:app --host 0.0.0.0 --port 8080 & python main.py"
+
+  frontend:
+    build: ./miniapp
+    container_name: namaz_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - bot
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: namaz_ngrok
+    restart: on-failure
+    environment:
+      NGROK_AUTHTOKEN: "39voAXSt6OGZUXMpzdLvkecUdOW_2i4Dx3tnnuoxntmJyAxvB"
+    command:
+      - "http"
+      - "--log=stdout"
+      - "frontend:80"
+    ports:
+      - "4040:4040"
+    depends_on:
+      - frontend

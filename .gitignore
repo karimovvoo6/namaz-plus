@@ -1,0 +1,33 @@
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+venv/
+env/
+.venv/
+
+# Environment files and credentials
+.env
+*.env
+bot/.env
+miniapp/.env.local
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+bot/bot.db
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
