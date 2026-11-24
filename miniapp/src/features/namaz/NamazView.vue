@@ -252,6 +252,9 @@ function handleQuranClick() {
 .bg {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   z-index: 0;
   overflow: hidden;
 }

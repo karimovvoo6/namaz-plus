@@ -68,8 +68,8 @@ function handleQuranClick() {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 16px 20px;
-  padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 20px));
+  padding: 12px 20px;
+  padding-bottom: max(28px, calc(env(safe-area-inset-bottom) + 24px));
   gap: 12px;
   pointer-events: none;
 }

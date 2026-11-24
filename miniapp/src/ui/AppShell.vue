@@ -15,6 +15,9 @@ const themeStore = useThemeStore();
 .shell {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   background: #000; /* Fallback */
