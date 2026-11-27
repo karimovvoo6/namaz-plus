@@ -64,10 +64,13 @@
 
       <!-- Names List -->
       <div class="names-list">
-        <button
+        <div
           v-for="name in filteredNames"
           :key="name.number"
           class="name-card"
+          role="button"
+          tabindex="0"
+          @keydown.enter="openDetails(name)"
           @click="openDetails(name)"
         >
           <div class="name-number">{{ name.number }}</div>
@@ -92,7 +95,7 @@
               />
             </svg>
           </button>
-        </button>
+        </div>
       </div>
     </div>
 

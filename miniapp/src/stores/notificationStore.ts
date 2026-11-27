@@ -18,8 +18,10 @@ export interface NotificationSettings {
 }
 
 const DEFAULT_SOUNDS = [
-  { id: 'azan_makkah', name: computed(() => t('notifications.azan_makkah')), url: 'https://raw.githubusercontent.com/achaudhry/adhan/master/Adhan-Makkah.mp3' },
-  { id: 'bismillah', name: computed(() => t('notifications.bismillah')), url: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3' },
+  { id: 'azan_makkah', name: computed(() => t('notifications.azan_makkah')), url: '/audio/azan_makkah.mp3' },
+  { id: 'azan_madinah', name: computed(() => t('notifications.azan_madinah')), url: '/audio/azan_madinah.mp3' },
+  { id: 'azan_alafasy', name: computed(() => t('notifications.azan_alafasy')), url: '/audio/azan_alafasy.mp3' },
+  { id: 'bismillah', name: computed(() => t('notifications.bismillah')), url: '/audio/bismillah.mp3' },
   { id: 'none', name: computed(() => t('notifications.none')), url: '' },
 ];
 

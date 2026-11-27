@@ -26,6 +26,13 @@
     "next": "Следующий намаз",
     "tomorrow": "завтра"
   },
+  "ramadan": {
+    "suhur": "Сухур",
+    "iftar": "Ифтар",
+    "toIftar": "До Ифтара",
+    "toSuhur": "До Сухура",
+    "viewDua": "Дуа поста 📖"
+  },
   "location": {
     "title": "Местоположение",
     "current": "Текущее местоположение",
@@ -63,6 +70,8 @@
     "troubleshooting": "Не работают уведомления?",
     "troubleshootingHint": "Проверьте настройки уведомлений в Telegram",
     "azan_makkah": "Азан (Мекка)",
+    "azan_madinah": "Азан (Медина)",
+    "azan_alafasy": "Азан (Мишари Аль-Афаси)",
     "bismillah": "Бисмиллях",
     "none": "Без звука"
   },
@@ -103,10 +112,18 @@
     "tahajjudTitle": "Тахаджуд",
     "tahajjudSubtitle": "Последняя 1/3 ночи",
     "moreAboutTahajjud": "Подробнее о Тахаджуд",
-    "sourcePickerSubtitle": "В мини-приложении источник “shuroiulamo” берётся через API твоего Telegram-бота.",
-    "shuroiDesc": "Как в iOS (через API бота)",
-    "aladhanDesc": "Запасной вариант",
+    "sourcePickerSubtitle": "",
+    "shuroiDesc": "",
+    "aladhanDesc": "",
     "tahajjudInfoText": "Это добровольный ночной намаз. Время для него — последняя треть ночи, рассчитанная между Иша и Фаджром.",
+    "ramadanSectionTitle": "Рамадан",
+    "ramadanModeTitle": "Режим Рамадана",
+    "ramadanModeSubtitle": "Сухур, Ифтар и дуа поста",
+    "ramadanDuaTitle": "Дуа для поста (Сухур и Ифтар)",
+    "suhurDuaName": "Намерение на пост (Сухур)",
+    "suhurDuaText": "Перевод: «Я намерился держать пост месяца Рамадан от рассвета до заката искренне ради Аллаха».",
+    "iftarDuaName": "Дуа при разговении (Ифтар)",
+    "iftarDuaText": "Перевод: «О Аллах, ради Тебя я постился и Твоим уделом разговляюсь».",
     "gotIt": "Понятно"
   },
   "qibla": {

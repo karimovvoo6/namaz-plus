@@ -139,7 +139,12 @@ function goBack() {
 }
 
 function contactSupport() {
-  window.open('https://t.me/namaz_khujand_bot', '_blank');
+  const tgUrl = 'https://t.me/+992927406717';
+  if (window.Telegram?.WebApp?.openTelegramLink) {
+    window.Telegram.WebApp.openTelegramLink(tgUrl);
+  } else {
+    window.open(tgUrl, '_blank');
+  }
 }
 </script>
 

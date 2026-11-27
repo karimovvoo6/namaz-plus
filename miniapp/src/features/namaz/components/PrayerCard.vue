@@ -51,6 +51,49 @@
       <span v-else></span>
       <span v-if="showTimer" class="next-timer">{{ timer }}</span>
     </div>
+
+    <!-- Ramadan Mode Banner -->
+    <div
+      v-if="ramadanInfo"
+      class="ramadan-banner"
+      @click="showDuaModal = true"
+    >
+      <div class="ramadan-left">
+        <span class="ramadan-icon">{{ ramadanInfo.isFasting ? '🌙' : '✨' }}</span>
+        <div class="ramadan-text">
+          <div class="ramadan-label">
+            {{ ramadanInfo.title }} ({{ ramadanInfo.targetTime }})
+          </div>
+          <div class="ramadan-timer">{{ ramadanInfo.countdown }}</div>
+        </div>
+      </div>
+      <button class="ramadan-dua-btn" type="button" @click.stop="showDuaModal = true">
+        {{ $t('ramadan.viewDua') }}
+      </button>
+    </div>
+
+    <!-- Fasting Dua Modal -->
+    <div v-if="showDuaModal" class="dua-modal-overlay" @click="showDuaModal = false">
+      <div class="dua-modal-content" @click.stop>
+        <div class="dua-modal-header">
+          <span class="dua-modal-title">🌙 {{ $t('prayerSettings.ramadanDuaTitle') }}</span>
+          <button class="dua-close-btn" @click="showDuaModal = false">✕</button>
+        </div>
+        <div class="dua-modal-body">
+          <div class="dua-block">
+            <div class="dua-badge">{{ $t('prayerSettings.suhurDuaName') }}</div>
+            <div class="dua-arabic">نَوَيْتُ أَنْ أَصُومَ صَوْمَ شَهْرِ رَمَضَانَ مِنَ الْفَجْرِ إِلَى الْمَغْرِبِ خَالِصًا لِلَّهِ تَعَالَى</div>
+            <div class="dua-trans">{{ $t('prayerSettings.suhurDuaText') }}</div>
+          </div>
+          <div class="dua-divider"></div>
+          <div class="dua-block">
+            <div class="dua-badge iftar">{{ $t('prayerSettings.iftarDuaName') }}</div>
+            <div class="dua-arabic">اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</div>
+            <div class="dua-trans">{{ $t('prayerSettings.iftarDuaText') }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -59,11 +102,11 @@
 
 
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { usePrayerSettingsStore } from '../../../stores/prayerSettingsStore';
 import { usePrayerStore, type PrayerName, type NextPrayer } from '../../../stores/prayerStore';
-
-
+import { useSettingsStore } from '../../../stores/settingsStore';
 
 const props = defineProps<{
   list: { name: PrayerName; at: string }[];
@@ -77,6 +120,54 @@ const props = defineProps<{
 const { t } = useI18n();
 const prayerSettingsStore = usePrayerSettingsStore();
 const prayerStore = usePrayerStore();
+const settingsStore = useSettingsStore();
+
+const showDuaModal = ref(false);
+
+const ramadanInfo = computed(() => {
+  if (!settingsStore.ramadanModeEnabled) return null;
+  const fajrItem = props.list.find((p) => p.name === 'fajr');
+  const maghribItem = props.list.find((p) => p.name === 'maghrib');
+  if (!fajrItem || !maghribItem) return null;
+
+  const fajrDate = todayAt(fajrItem.at);
+  const maghribDate = todayAt(maghribItem.at);
+  const now = props.now;
+
+  // Если текущее время между Фаджром и Магрибом -> идет пост! Следующее событие — Ифтар.
+  if (now >= fajrDate && now < maghribDate) {
+    const diffMs = Math.max(0, maghribDate.getTime() - now.getTime());
+    const h = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
+    return {
+      isFasting: true,
+      title: t('ramadan.toIftar'),
+      targetTime: maghribItem.at,
+      countdown: `${h}:${m}:${s}`,
+      suhurTime: fajrItem.at,
+      iftarTime: maghribItem.at,
+    };
+  } else {
+    // Ночь: следующее событие — Сухур (до Фаджра)
+    const nextFajr = new Date(fajrDate);
+    if (now >= maghribDate) {
+      nextFajr.setDate(nextFajr.getDate() + 1);
+    }
+    const diffMs = Math.max(0, nextFajr.getTime() - now.getTime());
+    const h = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
+    return {
+      isFasting: false,
+      title: t('ramadan.toSuhur'),
+      targetTime: fajrItem.at,
+      countdown: `${h}:${m}:${s}`,
+      suhurTime: fajrItem.at,
+      iftarTime: maghribItem.at,
+    };
+  }
+});
 
 function prettyName(name: PrayerName) {
   return t(`prayers.${name}`);
@@ -266,5 +357,151 @@ function handleSoundToggle(prayer: PrayerName) {
 .next-timer {
   font-size: 16px;
   letter-spacing: 0.3px;
+}
+
+/* Ramadan Mode Banner */
+.ramadan-banner {
+  margin-top: 10px;
+  background: linear-gradient(135deg, rgba(229, 184, 105, 0.2), rgba(31, 138, 91, 0.25));
+  border: 1px solid rgba(229, 184, 105, 0.35);
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.ramadan-banner:hover {
+  background: linear-gradient(135deg, rgba(229, 184, 105, 0.28), rgba(31, 138, 91, 0.35));
+}
+
+.ramadan-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ramadan-icon {
+  font-size: 20px;
+}
+
+.ramadan-label {
+  font-size: 11.5px;
+  color: #f7d58b;
+  font-weight: 600;
+}
+
+.ramadan-timer {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.ramadan-dua-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Fasting Dua Modal */
+.dua-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.dua-modal-content {
+  background: #141e23;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+}
+
+.dua-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dua-modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f7d58b;
+}
+
+.dua-close-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.dua-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dua-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 8px;
+  background: rgba(110, 231, 183, 0.15);
+  color: #6ee7b7;
+}
+
+.dua-badge.iftar {
+  background: rgba(247, 213, 139, 0.15);
+  color: #f7d58b;
+}
+
+.dua-arabic {
+  font-size: 16px;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.6;
+  font-family: serif;
+  color: #fff;
+}
+
+.dua-trans {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
+}
+
+.dua-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 14px 0;
 }
 </style>

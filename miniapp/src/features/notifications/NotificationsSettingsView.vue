@@ -95,15 +95,30 @@
               {{ $t('notifications.sound') }}: {{ $t(`prayers.${editingPrayer}`) }}
             </div>
             <div class="picker-options">
-              <button
+              <div
                 v-for="sound in notificationStore.sounds"
                 :key="sound.id"
-                class="picker-option"
-                :class="{ active: editingPrayer && getCurrentSound(editingPrayer) === sound.id }"
-                @click="selectSound(sound.id)"
+                class="sound-row-item"
               >
-                {{ sound.name }}
-              </button>
+                <button
+                  type="button"
+                  class="picker-option sound-select-btn"
+                  :class="{ active: editingPrayer && getCurrentSound(editingPrayer) === sound.id }"
+                  @click="selectSound(sound.id)"
+                >
+                  {{ sound.name }}
+                </button>
+                <button
+                  v-if="sound.url"
+                  type="button"
+                  class="sound-preview-btn"
+                  :class="{ active: currentPlayingId === sound.id }"
+                  @click.stop="togglePlaySound(sound)"
+                  :aria-label="currentPlayingId === sound.id ? 'Стоп' : 'Слушать'"
+                >
+                  {{ currentPlayingId === sound.id ? '⏹' : '▶' }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -194,10 +209,40 @@ function handleTogglePrayer(prayer: PrayerName, enabled: boolean) {
   }
 }
 
+const currentPlayingId = ref<string | null>(null);
+
 function stopPreview() {
   if (previewAudio) {
     previewAudio.pause();
+    previewAudio.currentTime = 0;
     previewAudio = null;
+  }
+  currentPlayingId.value = null;
+}
+
+function togglePlaySound(sound: { id: string; url: string }) {
+  if (currentPlayingId.value === sound.id) {
+    stopPreview();
+    return;
+  }
+
+  stopPreview();
+
+  if (!sound.url) return;
+
+  try {
+    previewAudio = new Audio(sound.url);
+    previewAudio.loop = false;
+    currentPlayingId.value = sound.id;
+    previewAudio.play().catch((e: Error) => {
+      console.warn('Failed to play preview', e);
+      stopPreview();
+    });
+    previewAudio.onended = () => {
+      stopPreview();
+    };
+  } catch (err) {
+    stopPreview();
   }
 }
 
@@ -245,18 +290,7 @@ function getTimeOffset(prayer: PrayerName) {
 function selectSound(soundId: string) {
   if (editingPrayer.value) {
     notificationStore.setPrayerSound(editingPrayer.value, soundId);
-    
-    stopPreview();
-    
-    const url = notificationStore.getSoundUrl(soundId);
-    if (url) {
-      previewAudio = new Audio(url);
-      previewAudio.loop = true; // Loop Azan if needed, or just play
-      previewAudio.play().catch((e: Error) => console.error('Failed to play preview', e));
-    }
   }
-  
-  // Removed immediate close - now stays open until clicking outside
   
   if (window.Telegram?.WebApp) {
     window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -521,5 +555,43 @@ input:checked + .slider:before {
 .picker-option.active {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.25);
+}
+
+.sound-row-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sound-select-btn {
+  flex: 1;
+}
+
+.sound-preview-btn {
+  width: 46px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #6ee7b7;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sound-preview-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.04);
+}
+
+.sound-preview-btn.active {
+  background: #1f8a5b;
+  color: #fff;
+  border-color: #1f8a5b;
+  box-shadow: 0 0 10px rgba(31, 138, 91, 0.5);
 }
 </style>

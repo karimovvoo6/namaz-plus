@@ -1,0 +1,19 @@
+{
+  "name": "Namaz+ — Время намаза и Коран",
+  "short_name": "Namaz+",
+  "description": "Исламское мобильное приложение: точное расписание намаза, Коран, Кибла, Тасбих и Имена Аллаха",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#141e23",
+  "theme_color": "#0B533E",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

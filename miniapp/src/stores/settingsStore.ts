@@ -15,6 +15,7 @@ const STORAGE_KEYS = {
   prayerSettings: 'prayerSettings',
   prayerTimesSource: 'prayerTimesSource',
   tahajjudEnabled: 'tahajjudEnabled',
+  ramadanModeEnabled: 'ramadanModeEnabled',
 } as const;
 
 export const useSettingsStore = defineStore('settings', () => {
@@ -30,6 +31,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   const prayerTimesSource = ref<PrayerTimesSource>('shuroiulamo');
   const tahajjudEnabled = ref<boolean>(false);
+  const ramadanModeEnabled = ref<boolean>(false);
 
   /* =======================
      COMPUTED
@@ -73,6 +75,11 @@ export const useSettingsStore = defineStore('settings', () => {
     localStorage.setItem(STORAGE_KEYS.tahajjudEnabled, String(enabled));
   }
 
+  function setRamadanModeEnabled(enabled: boolean) {
+    ramadanModeEnabled.value = enabled;
+    localStorage.setItem(STORAGE_KEYS.ramadanModeEnabled, String(enabled));
+  }
+
   function loadFromStorage() {
     try {
       /* ===== Language ===== */
@@ -100,6 +107,12 @@ export const useSettingsStore = defineStore('settings', () => {
       const storedTah = localStorage.getItem(STORAGE_KEYS.tahajjudEnabled);
       if (storedTah === 'true' || storedTah === 'false') {
         tahajjudEnabled.value = storedTah === 'true';
+      }
+
+      /* ===== Ramadan Mode ===== */
+      const storedRam = localStorage.getItem(STORAGE_KEYS.ramadanModeEnabled);
+      if (storedRam === 'true' || storedRam === 'false') {
+        ramadanModeEnabled.value = storedRam === 'true';
       }
     } catch (err) {
       console.error('Failed to load settings from storage:', err);
@@ -143,6 +156,7 @@ export const useSettingsStore = defineStore('settings', () => {
     prayerSettings,
     prayerTimesSource,
     tahajjudEnabled,
+    ramadanModeEnabled,
 
     // computed
     languageName,
@@ -152,6 +166,7 @@ export const useSettingsStore = defineStore('settings', () => {
     setPrayerSettings,
     setPrayerTimesSource,
     setTahajjudEnabled,
+    setRamadanModeEnabled,
     loadFromStorage,
     syncWithBackend,
   };

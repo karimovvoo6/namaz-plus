@@ -83,10 +83,13 @@
         <div v-if="locationStore.savedLocations.length > 0 && !searchQuery" class="saved-section">
           <div class="section-title">{{ $t('location.saved') }}</div>
           <div class="saved-list">
-            <button
+            <div
               v-for="location in locationStore.savedLocations"
               :key="location.id"
               class="saved-item"
+              role="button"
+              tabindex="0"
+              @keydown.enter="selectLocation(location)"
               @click="selectLocation(location)"
             >
               <svg class="saved-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -109,7 +112,7 @@
                   <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 </svg>
               </button>
-            </button>
+            </div>
           </div>
         </div>
 

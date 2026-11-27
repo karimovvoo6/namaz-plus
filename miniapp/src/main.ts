@@ -54,4 +54,13 @@ themeStore.loadFromStorage();
 // Синхронизация языка с i18n
 i18n.global.locale.value = settingsStore.language;
 
+// PWA Service Worker
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator && !window.Telegram?.WebApp?.initData) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.warn('SW registration failed:', err);
+    });
+  });
+}
+
 app.mount('#app');

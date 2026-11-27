@@ -23,8 +23,7 @@
           <SettingsRow
             icon="info"
             :title="$t('prayerSettings.sourceTitle')"
-            :subtitle="`${cityLabel}, ${sourceLabel}`"
-            @click="sourceModalOpen = true"
+            :subtitle="`${cityLabel}, Aladhan (MWL, Ханафи)`"
           />
         </SettingsCard>
 
@@ -57,41 +56,79 @@
           />
         </SettingsCard>
 
-        <!-- Source Picker Modal -->
-        <div
-          v-if="sourceModalOpen"
-          class="picker-overlay"
-          @click="sourceModalOpen = false"
-        >
-          <div class="picker" @click.stop>
-            <div class="picker-title">{{ $t('prayerSettings.sourceTitle') }}</div>
-            <div class="picker-subtitle">
-              {{ $t('prayerSettings.sourcePickerSubtitle') }}
+        <!-- Режим Рамадана (Сухур и Ифтар) -->
+        <SettingsCard>
+          <div class="section-title">{{ $t('prayerSettings.ramadanSectionTitle') }}</div>
+
+          <div class="toggle-row">
+            <div class="toggle-label">
+              <div class="toggle-title">{{ $t('prayerSettings.ramadanModeTitle') }}</div>
+              <div class="toggle-subtitle">{{ $t('prayerSettings.ramadanModeSubtitle') }}</div>
             </div>
 
-            <div class="picker-options">
-              <button
-                type="button"
-                class="picker-option"
-                :class="{ active: settingsStore.prayerTimesSource === 'shuroiulamo' }"
-                @click="selectSource('shuroiulamo')"
-              >
-                shuroiulamo.tj
-                <span class="opt-desc">{{ $t('prayerSettings.shuroiDesc') }}</span>
-              </button>
+            <label class="toggle-switch">
+              <input
+                type="checkbox"
+                :checked="settingsStore.ramadanModeEnabled"
+                @change="onRamadanToggle"
+              />
+              <span class="slider" />
+            </label>
+          </div>
 
+          <div class="divider"></div>
+
+          <SettingsRow
+            icon="info"
+            :title="$t('prayerSettings.ramadanDuaTitle')"
+            @click="ramadanDuaOpen = true"
+          />
+        </SettingsCard>
+
+        <!-- Ramadan Dua Modal -->
+        <div
+          v-if="ramadanDuaOpen"
+          class="picker-overlay"
+          @click="ramadanDuaOpen = false"
+        >
+          <div class="picker" @click.stop style="max-height: 80vh; overflow-y: auto;">
+            <div class="picker-title">{{ $t('prayerSettings.ramadanDuaTitle') }}</div>
+
+            <div class="info-text" style="text-align: left; line-height: 1.5; font-size: 13.5px; display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <strong style="color: #6ee7b7; display: block; margin-bottom: 4px;">{{ $t('prayerSettings.suhurDuaName') }}:</strong>
+                <div style="font-size: 15px; direction: rtl; text-align: right; color: #fff; margin-bottom: 4px; font-family: serif;">
+                  نَوَيْتُ أَنْ أَصُومَ صَوْمَ شَهْرِ رَمَضَانَ مِنَ الْفَجْرِ إِلَى الْمَغْرِبِ خَالِصًا لِلَّهِ تَعَالَى
+                </div>
+                <div style="color: rgba(255, 255, 255, 0.75);">
+                  {{ $t('prayerSettings.suhurDuaText') }}
+                </div>
+              </div>
+
+              <div style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 12px;">
+                <strong style="color: #f7d58b; display: block; margin-bottom: 4px;">{{ $t('prayerSettings.iftarDuaName') }}:</strong>
+                <div style="font-size: 15px; direction: rtl; text-align: right; color: #fff; margin-bottom: 4px; font-family: serif;">
+                  اللَّهُمَّ لَكَ صُمْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ
+                </div>
+                <div style="color: rgba(255, 255, 255, 0.75);">
+                  {{ $t('prayerSettings.iftarDuaText') }}
+                </div>
+              </div>
+            </div>
+
+            <div class="picker-options" style="margin-top: 16px;">
               <button
                 type="button"
-                class="picker-option"
-                :class="{ active: settingsStore.prayerTimesSource === 'aladhan' }"
-                @click="selectSource('aladhan')"
+                class="picker-option active center"
+                @click="ramadanDuaOpen = false"
               >
-                aladhan.com
-                <span class="opt-desc">{{ $t('prayerSettings.aladhanDesc') }}</span>
+                {{ $t('prayerSettings.gotIt') }}
               </button>
             </div>
           </div>
         </div>
+
+
 
         <!-- Tahajjud Info Modal -->
         <div
@@ -144,6 +181,7 @@ const profileStore = useProfileStore();
 const sourceModalOpen = ref(false);
 
 const tahajjudInfoOpen = ref(false);
+const ramadanDuaOpen = ref(false);
 
 /**
  * ✅ TS-safe: displayName может быть undefined/null.
@@ -191,6 +229,16 @@ function onTahajjudToggle(e: Event) {
   if (profileStore.user?.id) {
     settingsStore.syncWithBackend(profileStore.user.id);
   }
+}
+
+function onRamadanToggle(e: Event) {
+  try {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
+  } catch (err) {}
+  const enabled = (e.target as HTMLInputElement).checked;
+  settingsStore.setRamadanModeEnabled(enabled);
 }
 
 
